@@ -16,7 +16,7 @@ const { blogImageResize, uploadPhoto } = require("../middleware/uploadImage");
 const router = express.Router();
 
 router.get("/getBlog/:id", authMiddleware, getBlog);
-router.get("/getAllBlogs", authMiddleware, getAllBlogs);
+router.get("/getAllBlogs", getAllBlogs);
 
 router.post("/createBlog", authMiddleware, isAdmin, createBlog);
 

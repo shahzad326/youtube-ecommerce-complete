@@ -15,8 +15,7 @@ const router = express.Router();
 router.get("/getBrand/:id", authMiddleware, isAdmin, getBrand);
 router.get(
   "/getAllBlogCategory",
-  authMiddleware,
-  isAdmin,
+
   getAllBrandCategories
 );
 

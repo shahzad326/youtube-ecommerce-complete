@@ -4,6 +4,7 @@ const app = express();
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
+const cors = require("cors");
 
 const dbConnect = require("./config/dbConnect");
 const authRouter = require("./routes/authRoute");
@@ -15,12 +16,14 @@ const brandRoute = require("./routes/brandRoute");
 const coupenRoute = require("./routes/coupenRoute");
 const colorRoute = require("./routes/colorRoute");
 const enquiryRoute = require("./routes/enquiryRoute");
+const uploadRoute = require("./routes/uploadRoute");
 
 const { notFound, errorHandler } = require("./middleware/errorHandler");
 dotenv.config();
 dbConnect();
 app.use(bodyParser());
 app.use(morgan("dev"));
+app.use(cors());
 
 bodyParser.urlencoded({ extended: false });
 app.use(cookieParser());
@@ -36,6 +39,7 @@ app.use("/api/brand", brandRoute);
 app.use("/api/coupen", coupenRoute);
 app.use("/api/color", colorRoute);
 app.use("/api/enquiry", enquiryRoute);
+app.use("/api/uplaod", uploadRoute);
 
 app.use("/", (req, res) => {
   res.send("Helllo From the Server Side");

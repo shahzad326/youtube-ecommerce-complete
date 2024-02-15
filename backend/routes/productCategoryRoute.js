@@ -17,12 +17,7 @@ router.get(
   isAdmin,
   getProductCategory
 );
-router.get(
-  "/getAllProductCategory",
-  authMiddleware,
-  isAdmin,
-  getAllProductCategories
-);
+router.get("/getAllProductCategory", getAllProductCategories);
 
 router.post(
   "/createProductCategory",

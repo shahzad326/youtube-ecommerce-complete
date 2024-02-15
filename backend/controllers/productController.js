@@ -306,39 +306,6 @@ const ratings = asyncHandler(async (req, res, next) => {
   }
 });
 
-const uploadImages = asyncHandler(async (req, res, next) => {
-  try {
-    const uploader = async (path) => await cloudinaryUploadImg(path, "images");
-    const urls = [];
-    const files = req.files;
-    for (const file of files) {
-      const { path } = file;
-      const newPath = await uploader(path);
-      urls.push(newPath);
-      fs.unlinkSync(path);
-    }
-    console.log(urls);
-    const images = urls.map((file) => {
-      return file;
-    });
-
-    res.json({ msg: "Images Uploaded", images });
-  } catch (error) {
-    throw new Error(error);
-  }
-});
-
-const deleteImages = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const deleted = cloudinaryDeleteImg(id, "images");
-    res.json({ msg: "Images Deleted", deleted });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
-
 module.exports = {
   createProduct,
   getProductById,
@@ -347,6 +314,4 @@ module.exports = {
   deleteProduct,
   addtoWishList,
   ratings,
-  uploadImages,
-  deleteImages,
 };

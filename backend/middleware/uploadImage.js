@@ -6,7 +6,7 @@ const multerStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Check if the request is for product images or blog images
 
-    cb(null, path.join(__dirname, `../public/images/`));
+    cb(null, path.join(__dirname, `../public/images`));
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -44,12 +44,12 @@ const productImageResize = async (req, res, next) => {
         `../public/images/products/${file.filename}.jpeg`
       );
 
-      console.log("Processing image:", inputPath);
+      // console.log("Processing image:", inputPath);
 
       try {
         const image = await Jimp.read(inputPath);
         await image.resize(300, 300).quality(90).write(outputPath);
-        console.log("Image processed successfully:", outputPath);
+        // console.log("Image processed successfully:", outputPath);
       } catch (error) {
         console.error("Error resizing image:", error);
         return next(error);

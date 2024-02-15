@@ -12,7 +12,7 @@ const {
 const router = express.Router();
 
 router.get("/getColor/:id", authMiddleware, isAdmin, getColor);
-router.get("/getAllColor", authMiddleware, isAdmin, getAllColorCategories);
+router.get("/getAllColor", getAllColorCategories);
 
 router.post("/createColor", authMiddleware, isAdmin, createColor);
 

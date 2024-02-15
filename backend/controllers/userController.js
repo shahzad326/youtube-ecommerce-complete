@@ -657,8 +657,23 @@ const getOrder = asyncHandler(async (req, res, next) => {
       .populate({
         path: "products.product", // Ensure the correct path based on your schema
       })
+      .populate({ path: "orderBy" })
       .exec();
     res.json(userorders);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+const getAllUserOrder = asyncHandler(async (req, res, next) => {
+  try {
+    const allUserorders = await Order.find()
+      .populate({
+        path: "products.product", // Ensure the correct path based on your schema
+      })
+      .populate({ path: "orderBy" })
+      .exec();
+    res.json(allUserorders);
   } catch (error) {
     throw new Error(error);
   }
@@ -703,5 +718,6 @@ module.exports = {
   applyCoupen,
   createOrder,
   getOrder,
+  getAllUserOrder,
   updateOrderStatus,
 };

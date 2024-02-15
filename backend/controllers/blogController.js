@@ -281,6 +281,7 @@ const uploadImages = asyncHandler(async (req, res, next) => {
       await cloudinaryUploadImage(path, "images");
     const urls = [];
     const files = req.files;
+    console.log(files, "Files");
     for (const file of files) {
       const { path } = file;
       const newPath = await uploader(path);
@@ -298,8 +299,7 @@ const uploadImages = asyncHandler(async (req, res, next) => {
 
     res.json({ msg: "Images Uploaded", findProduct });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    throw new Error(error);
   }
 });
 
