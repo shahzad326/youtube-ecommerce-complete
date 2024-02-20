@@ -14,7 +14,8 @@ import { getColor } from "../features/color/colorSlice";
 import { Select } from "antd";
 import Dropzone from "react-dropzone";
 import { deleteImg, uplaodImg } from "../features/upload/uploadSlice";
-import { createProduct } from "../features/product/productSlice";
+import { createProduct, resetState } from "../features/product/productSlice";
+import { toast } from "react-toastify";
 
 let schema = Yup.object().shape({
   title: Yup.string().required("title is required"),
@@ -25,6 +26,7 @@ let schema = Yup.object().shape({
     .min(1, "Please Ateast Choose one color")
     .required("Color is required"),
   category: Yup.string().required("Category is required"),
+  tags: Yup.string().required("Tags is required"),
   quantity: Yup.number().required("Quantity is required"),
 });
 
@@ -46,6 +48,18 @@ const AddProduct = () => {
 
   const colorState = useSelector((state) => state.color.colors.data);
   const imgState = useSelector((state) => state.upload.images);
+
+  const newProduct = useSelector((state) => state.product);
+  const { isSuccess, isError, isLoading, createdProduct } = newProduct;
+  useEffect(() => {
+    if (isSuccess && createdProduct) {
+      toast.success("Product Added Successfully", {});
+    }
+    if (isError) {
+      toast.error("Something went Wrong", {});
+    }
+  }, [isSuccess, isError, isLoading]);
+
   const coloropt = [];
   if (colorState) {
     colorState.forEach((i) => {
@@ -81,20 +95,30 @@ const AddProduct = () => {
       price: "",
       brand: "",
       category: "",
+      tags: "",
       color: [],
       quantity: "",
       images: "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      // dispatch(createProduct(values));
-      alert(JSON.stringify(values));
+      dispatch(createProduct(values));
+      // alert(JSON.stringify(values));
+      console.log(coloropt);
+      formik.resetForm();
+      setColor(null);
+
+      setImages(null);
+      setTimeout(() => {
+        dispatch(resetState());
+        navigate("/admin/product-list");
+      }, 3000);
     },
   });
 
   const handleColors = (e) => {
     setColor(e);
-    console.log(color);
+    console.log("Selected Colors:", e);
   };
 
   return (
@@ -107,7 +131,7 @@ const AddProduct = () => {
           onSubmit={formik.handleSubmit}
           className="d-flex gap-3 flex-column"
         >
-          <div className="mt-4">
+          <div>
             <CusotomInput
               type="text"
               label="Enter Product Title"
@@ -120,7 +144,7 @@ const AddProduct = () => {
               {formik.touched.title && formik.errors.title}
             </div>
           </div>
-          <div className="mt-4">
+          <div>
             <ReactQuill
               theme="snow"
               style={{ backgroundColor: "white" }}
@@ -166,7 +190,7 @@ const AddProduct = () => {
           <div className="error">
             {formik.touched.brand && formik.errors.brand}
           </div>
-          <div className="mt-4">
+          <div>
             <select
               className="form-control py-3 mb-3"
               name="category"
@@ -188,7 +212,7 @@ const AddProduct = () => {
               {formik.touched.category && formik.errors.category}
             </div>
           </div>
-          <div className="mt-4">
+          <div>
             <select
               className="form-control py-3 mb-3"
               name="tags"
@@ -197,11 +221,10 @@ const AddProduct = () => {
               onBlur={formik.handleBlur("tags")}
             >
               <option value="" disabled>
-                {" "}
                 Select Tags
               </option>
               <option value="featured">Featured</option>
-              <option value="popular"Popular></option>
+              <option value="popular">Popular</option>
               <option value="special">Special</option>
             </select>
             <div className="error">
@@ -220,7 +243,7 @@ const AddProduct = () => {
           <div className="error">
             {formik.touched.color && formik.errors.color}
           </div>
-          <div className="mt-4">
+          <div>
             <CusotomInput
               type="number"
               label="Enter Product Quantity"
@@ -233,8 +256,9 @@ const AddProduct = () => {
               {formik.touched.quantity && formik.errors.quantity}
             </div>
           </div>
-          <div className="bg-white border-1 p-5 text-center">
+          <div className="bg-white border-1 p-5 text-center cursor-pointer">
             <Dropzone
+              className="cursor-pointer"
               onDrop={(acceptedFiles) => {
                 dispatch(uplaodImg(acceptedFiles));
               }}
@@ -242,7 +266,7 @@ const AddProduct = () => {
               {({ getRootProps, getInputProps }) => (
                 <section>
                   <div {...getRootProps()}>
-                    <input {...getInputProps()} />
+                    <input {...getInputProps()} className="cursor-pointer" />
                     <p>Drag and drop some files here</p>
                   </div>
                 </section>

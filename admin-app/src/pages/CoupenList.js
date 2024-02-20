@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { getBlogCategory } from "../features/blog-category/blogCategorySlice";
+import { getBlog } from "../features/blog/blogSlice";
 
 const columns = [
   {
@@ -17,25 +17,30 @@ const columns = [
     sorter: (a, b) => a.title.length - b.title.length,
   },
   {
+    title: "Category",
+    dataIndex: "category",
+    sorter: (a, b) => a.category.length - b.category.length,
+  },
+  {
     title: "Action",
     dataIndex: "action",
   },
 ];
-const BlogCategoryList = () => {
+const CoupenList = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getBlogCategory());
+    dispatch(getBlog());
   }, []);
 
-  const blogCategoryState = useSelector(
-    (state) => state.blogCategory.blogCategory.data
-  );
+  const blogState = useSelector((state) => state.blog.blogs.allBlogs);
+  console.log(blogState);
 
-  const data1 = Array.isArray(blogCategoryState)
-    ? blogCategoryState.map((blogCategory, index) => ({
+  const data1 = Array.isArray(blogState)
+    ? blogState.map((blog, index) => ({
         key: index + 1,
-        title: blogCategory.title,
+        title: blog.title,
+        category: blog.category,
         action: (
           <div>
             <Link to="/" className="fs-3 text-danger">
@@ -61,4 +66,4 @@ const BlogCategoryList = () => {
   );
 };
 
-export default BlogCategoryList;
+export default CoupenList;

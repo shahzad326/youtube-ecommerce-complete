@@ -5,36 +5,27 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getBrand, resetState } from "../features/brand/brandSlice";
 
-import {
-  createBlogCategory,
-  getBlogCategory,
-  resetState,
-} from "../features/blog-category/blogCategorySlice";
-
+import { createBrand } from "../features/brand/brandSlice";
 import { toast } from "react-toastify";
 
 let schema = Yup.object().shape({
-  title: Yup.string().required("Blog Cateogory is required"),
+  title: Yup.string().required("Brand title is required"),
 });
 
-const AddBlogCategory = () => {
+const AddCoupen = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    dispatch(getBlogCategory());
+    dispatch(getBrand());
   }, []);
 
-  const newBlogCategory = useSelector((state) => state.blogCategory);
-  const {
-    isSuccess,
-    isLoading,
-    isError,
-    createdBlogCategory,
-  } = newBlogCategory;
+  const newBrand = useSelector((state) => state.brand);
+  const { isSuccess, isLoading, isError, createdBrand } = newBrand;
   useEffect(() => {
-    if (isSuccess && createdBlogCategory) {
-      toast.success("Blog Category Added Successfully", {});
+    if (isSuccess && createdBrand) {
+      toast.success("Brand Added Successfully", {});
     }
     if (isError) {
       toast.error("Something went Wrong", {});
@@ -47,19 +38,19 @@ const AddBlogCategory = () => {
     },
     validationSchema: schema,
     onSubmit: (values) => {
-      dispatch(createBlogCategory(values));
+      dispatch(createBrand(values));
       // alert(JSON.stringify(values));
       formik.resetForm();
       setTimeout(() => {
         dispatch(resetState());
-        navigate("/admin/blog-category-list");
+        navigate("/admin/list-brand"); // Redirect to the list-brand page
       }, 3000);
     },
   });
 
   return (
     <div>
-      <h3 className="mb-4 title">Add Blog Category</h3>
+      <h3 className="mb-4 title">Add Brand</h3>
 
       <div>
         <form
@@ -70,7 +61,7 @@ const AddBlogCategory = () => {
           <div>
             <CusotomInput
               type="text"
-              label="Enter Blog Catetgory Title"
+              label="Enter Product Title"
               name="title"
               value={formik.values.title}
               onChange={formik.handleChange("title")}
@@ -85,7 +76,7 @@ const AddBlogCategory = () => {
             className="btn btn-success border-0 rounded-0 my-5"
             type="submit"
           >
-            Add Blog Category
+            Add Brand
           </button>
         </form>
       </div>
@@ -93,4 +84,4 @@ const AddBlogCategory = () => {
   );
 };
 
-export default AddBlogCategory;
+export default AddCoupen;

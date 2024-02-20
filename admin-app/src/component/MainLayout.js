@@ -6,6 +6,10 @@ import {
   AiOutlineShoppingCart,
   AiOutlineUser,
 } from "react-icons/ai";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { Layout, Menu, Button, theme } from "antd";
 import { SiBrandfolder } from "react-icons/si";
 import { Outlet, useNavigate, Link } from "react-router-dom";
@@ -14,6 +18,7 @@ import { FaBloggerB, FaClipboardList } from "react-icons/fa";
 import { ImBlog } from "react-icons/im";
 import shahzad from "../images/20221212_032325.jpg";
 import { IoIosNotifications } from "react-icons/io";
+import { RiCouponLine } from "react-icons/ri";
 
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
@@ -104,6 +109,24 @@ const MainLayout = () => {
               key: "orders",
               icon: <FaClipboardList className="fs-4" />,
               label: "Orders",
+            },
+
+            {
+              key: "marketing",
+              icon: <RiCouponLine className="fs-4" />,
+              label: "Marketing",
+              children: [
+                {
+                  key: "add-coupen",
+                  icon: <ImBlog className="fs-4" />,
+                  label: "Add Coupen",
+                },
+                {
+                  key: "list-coupen",
+                  icon: <RiCouponLine className="fs-4" />,
+                  label: "Coupen List",
+                },
+              ],
             },
             {
               key: "blog",
@@ -212,6 +235,18 @@ const MainLayout = () => {
             borderRadius: borderRadiusLG,
           }}
         >
+          <ToastContainer
+            position="top-right"
+            autoClose={250}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
           <Outlet />
         </Content>
       </Layout>

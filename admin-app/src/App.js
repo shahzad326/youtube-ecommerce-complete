@@ -21,6 +21,8 @@ import AddCategory from "./pages/AddCategory";
 import AddBrand from "./pages/AddBrand";
 import AddProduct from "./pages/AddProduct";
 import "./App.css";
+import AddCoupen from "./pages/AddCoupen";
+import CoupenList from "./pages/CoupenList";
 
 function App() {
   return (
@@ -36,11 +38,13 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="customers" element={<Customer />} />
           <Route path="add-blog" element={<AddBlog />} />
+          <Route path="add-coupen" element={<AddCoupen />} />
 
           <Route path="product-list" element={<ProductList />} />
           <Route path="list-brand" element={<BrandList />} />
           <Route path="list-category" element={<CategoryList />} />
           <Route path="list-color" element={<ColorList />} />
+          <Route path="list-coupen" element={<CoupenList />} />
 
           <Route path="blog-category" element={<AddBlogCategory />} />
           <Route path="color" element={<AddColor />} />

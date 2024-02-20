@@ -54,7 +54,24 @@ const ProductList = () => {
         key: index + 1,
         title: product.title,
         brand: product.brand,
-        color: product.color,
+        color: (
+          <div className="w-20">
+            {product.color.map((i, j) => (
+              <div
+                key={j}
+                style={{
+                  color: "black",
+                  width: "20px",
+                  height: "20px",
+                  margin: "2px",
+                  display: "flex",
+                }}
+              >
+                {i}
+              </div>
+            ))}
+          </div>
+        ),
         category: product.category,
         price: `$ ${product.price}`,
         action: (

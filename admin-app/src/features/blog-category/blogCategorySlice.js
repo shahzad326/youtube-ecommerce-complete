@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import blogCategoryService from "./blogCategoryService";
 
 export const getBlogCategory = createAsyncThunk(
-  "brands/get-brands",
+  "blogCategory/getBlogCategory",
   async (thunkAPI) => {
     try {
       const timestamp = new Date().getTime();
@@ -13,6 +13,21 @@ export const getBlogCategory = createAsyncThunk(
   }
 );
 
+export const createBlogCategory = createAsyncThunk(
+  "blogCategory/createBlogCategory",
+  async (blogCategoryData, thunkAPI) => {
+    try {
+      const timestamp = new Date().getTime();
+      const productWithTimestamp = { ...blogCategoryData, timestamp }; // Add timestamp to productData
+      return await blogCategoryService.createBlogCategory(productWithTimestamp);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const resetState = createAction("Reset_all");
+
 const initialState = {
   blogCategory: [],
   isError: false,
@@ -22,7 +37,7 @@ const initialState = {
 };
 
 export const blogCategorySlice = createSlice({
-  name: "users",
+  name: "blogCategory",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -40,7 +55,22 @@ export const blogCategorySlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
-      });
+      })
+      .addCase(createBlogCategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createBlogCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.createdBlogCategory = action.payload;
+      })
+      .addCase(createBlogCategory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+      .addCase(resetState, () => initialState);
   },
 });
 

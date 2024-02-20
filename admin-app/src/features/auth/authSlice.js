@@ -1,10 +1,12 @@
 // authSlice.js
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import authService from "./authService";
 
 const getUserFromLocalStorage = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
   : null;
+
+export const resetState = createAction("Reset_all");
 
 const initialState = {
   user: getUserFromLocalStorage,
@@ -72,7 +74,8 @@ export const authSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.user = null;
-      });
+      })
+      .addCase(resetState, () => initialState);
   },
 });
 

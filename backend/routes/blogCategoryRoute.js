@@ -1,28 +1,37 @@
 const express = require("express");
 
 const { authMiddleware, isAdmin } = require("../middleware/authMiddleware");
-
 const {
-  getAllBrandCategories,
-  createBrand,
-  updateBrand,
-  deleteBrand,
-  getBrand,
-} = require("../controllers/brandController");
+  getBlogCategory,
+  getAllBlogCategories,
+  createBlogCategory,
+  updateBlogCategory,
+  deleteBlogCategory,
+} = require("../controllers/blogCategoryController");
 
 const router = express.Router();
 
-router.get("/getBrand/:id", authMiddleware, isAdmin, getBrand);
+router.get("/getBlogCategory/:id", authMiddleware, isAdmin, getBlogCategory);
 router.get(
   "/getAllBlogCategory",
 
-  getAllBrandCategories
+  getAllBlogCategories
 );
 
-router.post("/createBrand", authMiddleware, isAdmin, createBrand);
+router.post("/createBlogCategory", authMiddleware, isAdmin, createBlogCategory);
 
-router.put("/updateBrand/:id", authMiddleware, isAdmin, updateBrand);
+router.put(
+  "/updateBlogCategory/:id",
+  authMiddleware,
+  isAdmin,
+  updateBlogCategory
+);
 
-router.delete("/deleteBRand/:id", authMiddleware, isAdmin, deleteBrand);
+router.delete(
+  "/deleteBlogCategory/:id",
+  authMiddleware,
+  isAdmin,
+  deleteBlogCategory
+);
 
 module.exports = router;
